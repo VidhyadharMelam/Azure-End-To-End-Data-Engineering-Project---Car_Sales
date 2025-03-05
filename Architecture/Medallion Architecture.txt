@@ -1,0 +1,50 @@
+Data Architecture: Medallion Architecture
+
+Goal:
+
+The Medallion Architecture is used in this project to organize data into structured layers, improving data quality, performance, and scalability. This approach enables efficient data processing and ensures that only clean and enriched data is available for analytics and reporting.
+
+Medallion Architecture Overview:
+
+The architecture consists of three layers:
+
+1) Bronze Layer (Raw Data Ingestion)
+
+	Stores raw, unprocessed data directly from source systems.
+
+	Data is ingested incrementally from SQL databases and GitHub using Azure Data Factory.
+
+	Data is stored in Azure Data Lake Gen2 in its original format.
+
+	A watermark table and stored procedure track incremental changes.
+
+2) Silver Layer (Cleaned & Transformed Data)
+
+	Data is processed using Azure Databricks and PySpark to remove duplicates, standardize formats, and apply transformations.
+
+	Stored in Azure Data Lake Gen2 in Parquet format for optimized storage and querying.
+
+	Acts as an intermediate layer, ensuring that data is structured and ready for analysis.
+
+3) Gold Layer (Aggregated & Modeled Data)
+
+	Data is transformed into a star schema with fact and dimension tables.
+
+	Surrogate keys and Slowly Changing Dimension (SCD) Type 1 are implemented.
+
+	Stored in Delta Lake format for improved query performance and ACID compliance.
+
+	Optimized for business intelligence and reporting.
+
+
+Key Benefits of Medallion Architecture:
+
+	Scalability: Efficiently handles large datasets while ensuring data integrity.
+
+	Incremental Processing: Optimized data ingestion reduces redundant data processing.
+
+	Data Quality Assurance: Cleansing and transformation ensure data consistency and reliability.
+
+	Performance Optimization: Delta Lake format improves query speed and supports ACID transactions.
+
+	Enhanced Data Governance: Role-based access control using Unity Catalog ensures security compliance.
