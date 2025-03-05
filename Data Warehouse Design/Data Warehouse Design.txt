@@ -1,0 +1,200 @@
+Data Warehouse Design: 
+
+Goal: 
+
+Design and implementation of the data warehouse for the car sales data pipeline. It covers the schema structure, fact and dimension tables, and SQL queries used for transformations.
+
+Data Warehouse Schema Design
+
+	The data warehouse follows a Star Schema approach, optimizing query performance and supporting analytical workloads efficiently.
+
+Star Schema Components
+
+	Fact Table: Stores transactional data (e.g., sales records).
+
+	Dimension Tables: Contain descriptive attributes related to business entities.
+
+Fact Table: fact_sales
+
+Column Name
+
+Data Type
+
+Description
+
+Sale_Id
+
+INT (PK)
+
+Surrogate key for each sale
+
+Branch_Id
+
+INT (FK)
+
+Reference to dim_branch
+
+Dealer_Id
+
+INT (FK)
+
+Reference to dim_dealer
+
+Model_Id
+
+INT (FK)
+
+Reference to dim_car_model
+
+Date_Id
+
+INT (FK)
+
+Reference to dim_date
+
+Revenue
+
+DECIMAL
+
+Total revenue for the sale
+
+Units_Sold
+
+INT
+
+Number of cars sold
+
+Dimension Tables
+
+1. dim_branch
+
+Column Name
+
+Data Type
+
+Description
+
+Branch_Id
+
+INT (PK)
+
+Surrogate key for each branch
+
+BranchName
+
+STRING
+
+Name of the branch
+
+2. dim_dealer
+
+Column Name
+
+Data Type
+
+Description
+
+Dealer_Id
+
+INT (PK)
+
+Surrogate key for each dealer
+
+DealerName
+
+STRING
+
+Name of the dealer
+
+3. dim_car_model
+
+Column Name
+
+Data Type
+
+Description
+
+Model_Id
+
+INT (PK)
+
+Surrogate key for each car model
+
+ModelName
+
+STRING
+
+Car model name
+
+4. dim_date
+
+Column Name
+
+Data Type
+
+Description
+
+Date_Id
+
+INT (PK)
+
+Surrogate key for the date
+
+Day
+
+INT
+
+Day of the sale
+
+Month
+
+INT
+
+Month of the sale
+
+Year
+
+INT
+
+Year of the sale
+
+
+SQL Queries for Data Transformation
+
+1. Creating Fact Table fact_sales
+
+	CREATE TABLE fact_sales (
+    Sale_Id INT IDENTITY(1,1) PRIMARY KEY,
+    Branch_Id INT,
+    Dealer_Id INT,
+    Model_Id INT,
+    Date_Id INT,
+    Revenue DECIMAL(18,2),
+    Units_Sold INT,
+    FOREIGN KEY (Branch_Id) REFERENCES dim_branch(Branch_Id),
+    FOREIGN KEY (Dealer_Id) REFERENCES dim_dealer(Dealer_Id),
+    FOREIGN KEY (Model_Id) REFERENCES dim_car_model(Model_Id),
+    FOREIGN KEY (Date_Id) REFERENCES dim_date(Date_Id)
+);
+
+2. Populating Dimension Tables
+	INSERT INTO dim_branch (BranchName)
+	SELECT DISTINCT BranchName FROM raw_data;
+
+	INSERT INTO dim_dealer (DealerName)
+	SELECT DISTINCT DealerName FROM raw_data;
+
+3. Loading Data into Fact Table
+	INSERT INTO fact_sales (Branch_Id, Dealer_Id, Model_Id, Date_Id, Revenue, Units_Sold)
+SELECT
+    b.Branch_Id,
+    d.Dealer_Id,
+    m.Model_Id,
+    dt.Date_Id,
+    r.Revenue,
+    r.Units_Sold
+	FROM raw_data r
+	JOIN dim_branch b ON r.BranchName = b.BranchName
+	JOIN dim_dealer d ON r.DealerName = d.DealerName
+	JOIN dim_car_model m ON r.ModelName = m.ModelName
+	JOIN dim_date dt ON r.Date = dt.Date;
