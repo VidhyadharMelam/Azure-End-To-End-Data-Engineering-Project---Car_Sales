@@ -1,0 +1,50 @@
+PySpark Data Transformation in Databricks:
+
+Goal:
+
+This document details how raw data is transformed using PySpark in Azure Databricks, ensuring data quality, consistency, and optimization for analytical processing.
+
+Transformation Process:
+
+Data transformation occurs in multiple stages within the Medallion Architecture (Bronze, Silver, Gold layers):
+
+1. Bronze Layer (Raw Data Cleansing)
+
+	Remove Duplicates: Identify and drop duplicate records.
+
+	Handle Missing Values: Impute or remove NULL values where necessary.
+
+	Standardize Formats: Convert date formats, normalize text fields, and standardize categorical values.
+
+2. Silver Layer (Data Enrichment & Processing)
+
+	Joins & Relationships: Combine data from multiple tables (e.g., linking sales data to dealer and branch details).
+
+	Aggregation & Derived Metrics: Calculate revenue, total units sold, and other business KPIs.
+
+	Data Type Casting: Convert data types for performance optimization (e.g., string to integer, timestamp conversions).
+
+	Apply Business Logic: Implement business-specific rules for data transformation.
+
+	Store in Parquet Format: Save transformed data in an optimized, compressed format for further processing.
+
+3. Gold Layer (Star Schema & Delta Lake Storage)
+
+	Fact and Dimension Tables: Transform data into a star schema with a central fact table and multiple dimension tables.
+
+	Surrogate Key Generation: Replace natural keys with surrogate keys for efficient joins.
+
+	Slowly Changing Dimensions (SCD Type 1): Ensure dimension updates reflect the latest information.
+
+	Store in Delta Lake Format: Optimized for ACID transactions and fast querying.
+
+
+Key Benefits of PySpark Transformations
+
+	Scalability: Handles large volumes of data efficiently.
+
+	Performance Optimization: Parquet and Delta Lake formats improve read/write speeds.
+
+	Data Quality: Cleansing, enrichment, and validation ensure high data accuracy.
+
+	Automation: Integrated into Databricks workflows for end-to-end automation.
