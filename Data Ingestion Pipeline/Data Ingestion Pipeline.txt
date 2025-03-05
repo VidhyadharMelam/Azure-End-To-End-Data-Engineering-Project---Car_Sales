@@ -1,0 +1,49 @@
+Data Ingestion Pipeline:
+
+Goal:
+
+The data ingestion pipeline is designed to extract, transform, and load data efficiently from multiple sources into Azure Data Lake Gen2 using Azure Data Factory (ADF). This pipeline ensures incremental data loading, maintaining data consistency while optimizing performance.
+
+1) Data Sources
+
+	SQL Database: Transactional data related to car sales (e.g., Branch, Dealer, Model, Revenue, Units Sold, and Date Details).
+
+	GitHub: Source for configuration files and reference data.
+
+2) Pipeline Architecture
+
+	The data ingestion process consists of the following key stages:
+
+	1) Extract (Data Source to Bronze Layer)
+
+	ADF is used to connect to the SQL database and GitHub repository.
+
+	Data is extracted incrementally using a watermark table and stored procedure.
+
+	Data is ingested in its raw format and stored in the Bronze Layer in Azure Data Lake Gen2.
+
+	2) Load (Bronze to Silver Layer)
+
+	Raw data is cleansed, deduplicated, and transformed using Azure Databricks.
+
+	The cleaned data is stored in Parquet format in the Silver Layer.
+
+3) Transform (Silver to Gold Layer)
+
+	Data is structured into a star schema with fact and dimension tables.
+
+	SCD Type 1 is applied, and surrogate keys are generated for dimension tables.
+
+	The final dataset is stored in Delta Lake format in the Gold Layer.
+
+3) Incremental Data Processing
+
+	A watermark table keeps track of the last processed timestamp to ensure only new or updated records are ingested.
+
+	A stored procedure is used to filter and load incremental records efficiently.
+
+4) Security & Access Control
+
+	Data access is managed using Azure Databricks Unity Catalog.
+
+	ADF uses the Storage Blob Data Contributor role to securely load data into Azure Data Lake Gen2.
