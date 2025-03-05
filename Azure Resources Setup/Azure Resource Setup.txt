@@ -1,0 +1,102 @@
+Azure Resources Setup:
+
+Goal:
+
+A step-by-step guide to setting up the necessary Azure resources required for the end-to-end data engineering pipeline. These resources include storage, compute, and orchestration services.
+
+Step 1: Create an Azure Resource Group
+
+	A resource group is required to organize all Azure resources for this project.
+
+	Navigate to the Azure Portal.
+
+	Search for Resource Groups and click Create.
+
+	Provide a name (e.g., car-sales-rg) and choose a region.
+
+	Click Review + Create and then Create.
+
+Step 2: Set Up Azure Data Lake Storage Gen2
+
+	Azure Data Lake Storage Gen2 (ADLS Gen2) is used to store raw, transformed, and aggregated data.
+
+	Go to the Azure Portal and search for Storage Accounts.
+
+	Click Create, select the previously created resource group.
+
+	Choose a Storage Account Name (e.g., carsalesdatalake).
+
+	Select Region, Standard performance, and StorageV2.
+
+	Enable Hierarchical Namespace for optimized querying.
+
+	Click Review + Create and then Create.
+
+Step 3: Set Up Azure Data Factory (ADF)
+
+	ADF is used for orchestrating data ingestion.
+
+	Search for Data Factory in the Azure Portal.
+
+	Click Create and provide a name (e.g., car-sales-adf).
+
+	Select the Resource Group created earlier.
+
+	Choose Region and Git Integration (if applicable).
+
+	Click Review + Create and then Create.
+
+Step 4: Configure Azure Databricks Workspace
+
+	Azure Databricks is used for data transformation and analytics.
+
+	Go to the Azure Portal and search for Azure Databricks.
+
+	Click Create, choose the Resource Group.
+
+	Provide a workspace name (e.g., car-sales-databricks).
+
+	Choose Pricing Tier (Standard or Premium depending on requirements).
+
+	Click Review + Create and then Create.
+
+	Databricks Cluster Configuration
+
+	Open Azure Databricks Workspace.
+
+	Navigate to Compute and click Create Cluster.
+
+	Choose a Cluster Name (e.g., car-sales-cluster).
+
+	Select Databricks Runtime Version (Latest LTS recommended).
+
+	Configure Autoscaling and set Min/Max Workers.
+
+	Click Create.
+
+Step 5: Enable Unity Catalog for Data Governance
+
+	Open Azure Databricks Workspace.
+
+	Navigate to Settings > Admin Console.
+
+	Enable Unity Catalog and set up required access controls.
+
+Step 6: Configure Security & Access
+
+	Assign Storage Blob Data Contributor role to Databricks for access to ADLS Gen2.
+
+	Use Managed Identities to connect ADF securely to storage and databases.
+
+Step 7: Create Azure SQL Database (Optional for Source Data)
+
+	Search for Azure SQL Database in the Azure Portal.
+
+	Click Create, provide a Database Name (e.g., car-sales-db).
+
+	Configure Compute & Storage as per requirements.
+
+	Set up firewall rules for secure access.
+
+	Click Review + Create and then Create.
+
