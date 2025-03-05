@@ -1,0 +1,67 @@
+Project Overview: Car Sales Data Engineering Pipeline:
+
+Goal:
+
+The primary goal of this project is to design and implement an end-to-end data engineering pipeline for car sales data. The solution enables efficient data ingestion, transformation, and storage using Azure services, ensuring incremental data updates and optimized querying through a star schema model.
+
+Business Problem:
+
+Car dealerships generate large volumes of sales data across multiple locations, making it challenging to derive insights in real-time. The existing system lacks a structured approach to handle incremental data ingestion, transformation, and reporting efficiently. Key challenges include:
+
+	1) Inconsistent data formats and sources.
+
+	2) Lack of a scalable pipeline for processing large datasets.
+
+	3) Difficulty in tracking sales performance across different dimensions (e.g., location, dealer, model, time period).
+
+	4) The need for a structured data model for analytics and reporting.
+
+Solution Overview:
+
+To address these challenges, a robust data pipeline was developed using Azure Data Factory, Azure Data Lake Gen2, and Databricks. The pipeline follows a multi-layered architecture:
+
+1) Data Ingestion (Bronze Layer):
+
+	1) Data is sourced from SQL databases and GitHub.
+
+	2) Azure Data Factory (ADF) is used to incrementally ingest data into the Bronze layer in Azure Data Lake Gen2.
+
+	3) A watermark table and stored procedure ensure efficient incremental loading.
+
+2) Data Transformation (Silver Layer):
+
+	1) Databricks is used to clean, transform, and enrich the data.
+
+	2) Transformed data is stored in Azure Data Lake Gen2 in Parquet format as a single large table.
+
+3) Data Modeling & Storage (Gold Layer):
+
+	1) The refined data is transformed into a star schema model consisting of fact and dimension tables.
+
+	2) The final dataset is stored in Delta Lake format for optimized querying and performance.
+
+	3) Surrogate keys and Slowly Changing Dimension (SCD) Type 1 are implemented for better data consistency.
+
+4) Security & Governance
+
+	Azure Databricks Unity Catalog is used for data governance.
+
+	Access is controlled using the "Storage Blob Data Contributor" role.
+
+5) Orchestration
+
+	The entire workflow is automated using Databricks Workflows and an end-to-end Azure Data Factory pipeline.
+
+
+Key Benefits:
+
+	Incremental Data Processing: Ensures efficient handling of new data while reducing redundant processing.
+
+	Optimized Storage & Querying: Delta Lake format and star schema design improve data retrieval performance.
+
+	Scalability: The solution can handle large datasets efficiently using Azure services.
+
+	Data Governance: Unity Catalog ensures proper access control and security compliance.
+
+	Business Insights: Enables tracking of key metrics such as revenue, units sold, and sales performance across branches, dealers, and models.
+
